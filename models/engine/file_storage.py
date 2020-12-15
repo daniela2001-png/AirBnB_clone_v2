@@ -53,6 +53,10 @@ class FileStorage:
         """
         delete a juju object inside the dict objects
         """
-        if obj:
+        if obj is None:
+            return
+        else:
             key = "{}.{}".format(type(obj).__name__, obj.id)
-            del self.__objects[key]
+            if key in self.__objects:
+                del self.__objects[key]
+                self.save()
