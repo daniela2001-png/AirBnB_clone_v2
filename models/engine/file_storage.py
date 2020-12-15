@@ -51,7 +51,7 @@ class FileStorage:
 
     def delete(self, obj=None):
         """
-        delete a object inside the dict objects
+        delete a juju object inside the dict objects
         """
         try:
             key "{}.{}".format(type(obj).__name__, obj.id)
