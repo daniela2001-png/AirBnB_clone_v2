@@ -50,13 +50,6 @@ class FileStorage:
             pass
 
     def delete(self, obj=None):
-        """
-        Delete a object inside the dict objects
-        """
-        if obj is None:
-            return
-        else:
-            key = "{}.{}".format(type(obj).__name__, obj.id)
-            if key in self.__objects:
-                del self.__objects[key]
-                self.save()
+        """Delete a object inside the dict objects."""
+        if obj is not None:
+            del self.__objects['{}.{}'.format(obj.__class__.__name__, obj.id)]
