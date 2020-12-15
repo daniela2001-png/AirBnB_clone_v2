@@ -54,7 +54,7 @@ class FileStorage:
         delete a juju object inside the dict objects
         """
         try:
-            key "{}.{}".format(type(obj).__name__, obj.id)
+            key = "{}.{}".format(type(obj).__name__, obj.id)
             del self.__objects[key]
         except:
             pass
