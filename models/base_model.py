@@ -7,7 +7,7 @@ from datetime import datetime
 class BaseModel:
     """A base class for all hbnb models"""
 
-    def _init_(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         """
         Arguments
           - *args: is a Tuple that contains all arguments (won’t be used).
@@ -19,7 +19,7 @@ class BaseModel:
 
         if kwargs:
             for k, v in kwargs.items():
-                if k == '_class_':
+                if k == '__class__':
                     pass
                 elif k == 'created_at' or k == 'updated_at':
                     setattr(self, k, datetime.
