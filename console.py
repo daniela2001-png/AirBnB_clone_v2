@@ -13,9 +13,18 @@ from models.city import City
 from models.amenity import Amenity
 from models.review import Review
 
+<<<<<<< HEAD
 classes = {'BaseModel': BaseModel, 'User': User, 'Place': Place,
            'State': State, 'City': City, 'Amenity': Amenity,
            'Review': Review}
+=======
+classes = {
+    'BaseModel': BaseModel, 'User': User, 'Place': Place,
+    'State': State, 'City': City, 'Amenity': Amenity,
+    'Review': Review
+    }
+
+>>>>>>> 63f3bc0108f8f90062d3e2f47175ebba73241dd5
 
 class HBNBCommand(cmd.Cmd):
     """ Contains the functionality for the HBNB console"""
