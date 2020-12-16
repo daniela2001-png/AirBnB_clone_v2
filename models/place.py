@@ -4,12 +4,7 @@ import models
 from os import getenv
 from models.base_model import Base, BaseModel
 from models.review import Review
-from sqlalchemy import Column
-from sqlalchemy import Float
-from sqlalchemy import ForeignKey
-from sqlalchemy import Integer
-from sqlalchemy import String
-from sqlalchemy import Table
+from sqlalchemy import Table, Column, Float, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 
 association_table = Table('place_amenity', Base.metadata,
