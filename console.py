@@ -13,9 +13,9 @@ from models.city import City
 from models.amenity import Amenity
 from models.review import Review
 
-classes = {'BaseModel': BaseModel, 'User': User, 'Place': Place,
-        'State': State, 'City': City, 'Amenity': Amenity,
-        'Review': Review}
+classes = {'BaseModel': BaseModel, 'User': User, 'State': State, 'City': City,
+           'Amenity': Amenity, 'Place': Place, 'Review': Review}
+
 
 class HBNBCommand(cmd.Cmd):
     """ Contains the functionality for the HBNB console"""
@@ -77,7 +77,7 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] == '{' and pline[-1] == '}'\
+                    if pline[0] is '{' and pline[-1] is '}'\
                             and type(eval(pline)) is dict:
                         _args = pline
                     else:
@@ -117,31 +117,32 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
-    def do_create(self, line):
-        """ Create an object of any class"""
-        tokens = shlex.split(line)
-
-        if not line or len(line) == 0:
-            print("** class name missing **")
-            return
-        if tokens[0] not in HBNBCommand.classes:
-            print("** class doesn't exist **")
-            return
-
-        if len(tokens) == 1:
-            new_instance = HBNBCommand.classes[line]()
-            new_instance.save()
-            print(new_instance.id)
-        if len(tokens) > 1:
-            new_instance = HBNBCommand.classes[tokens[0]]()
-            pieces = dict(i.split('=') for i in tokens[1:])
-            for k, v in pieces.items():
-                if '_' in v:
-                    v = v.replace('_', ' ')
-                if hasattr(new_instance, k):
-                    setattr(new_instance, k, v)
-            new_instance.save()
-            print(new_instance.id)
+    def do_create(self, args):
+        """Creates a new instance of BaseModel, saves it
+        Exceptions:
+            SyntaxError: when there is no args given
+            NameError: when there is no object taht has the name
+        """
+        if args is None or len(args) == 0:
+            print("* class name missing *")
+        else:
+            new_list = shlex.split(args)
+            if new_list[0] in classes and len(new_list) == 1:
+                obj = eval(str(args) + "()")
+                obj.save()
+                print(obj.id)
+            elif new_list[0] in classes and len(new_list) > 1:
+                obj = eval(str(new_list[0]) + "()")
+                params = dict(arg.split('=') for arg in new_list[1:])
+                for key, value in params.items():
+                    if '_' in value:
+                        value = value.replace('_', ' ')
+                    if hasattr(obj, key):
+                        setattr(obj, key, value)
+                obj.save()
+                print(obj.id)
+            else:
+                print("* class doesn't exist *")
 
     def do_show(self, args):
         """Prints the string representation of an instance
@@ -258,7 +259,7 @@ class HBNBCommand(cmd.Cmd):
             else:
                 objects = storage.all(args)
         except NameError:
-            print("* class doesn't exist *")
+            print("** class doesn't exist **")
             return
         for key, val in objects.items():
             if len(args) != 0:
@@ -326,7 +327,7 @@ class HBNBCommand(cmd.Cmd):
                 args.append(v)
         else:  # isolate args
             args = args[2]
-            if args and args[0] == '\"':  # check for quoted arg
+            if args and args[0] is '\"':  # check for quoted arg
                 second_quote = args.find('\"', 1)
                 att_name = args[1:second_quote]
                 args = args[second_quote + 1:]
@@ -334,10 +335,10 @@ class HBNBCommand(cmd.Cmd):
             args = args.partition(' ')
 
             # if att_name was not quoted arg
-            if not att_name and args[0] != ' ':
+            if not att_name and args[0] is not ' ':
                 att_name = args[0]
             # check for quoted val arg
-            if args[2] and args[2][0] == '\"':
+            if args[2] and args[2][0] is '\"':
                 att_val = args[2][1:args[2].find('\"', 1)]
 
             # if att_val was not quoted arg
@@ -365,7 +366,7 @@ class HBNBCommand(cmd.Cmd):
                     att_val = HBNBCommand.types[att_name](att_val)
 
                 # update dictionary with name, value pair
-                new_dict.dict.update({att_name: att_val})
+                new_dict._dict_.update({att_name: att_val})
 
         new_dict.save()  # save updates to file
 
