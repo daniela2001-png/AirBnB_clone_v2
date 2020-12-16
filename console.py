@@ -117,32 +117,31 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
-    def do_create(self, args):
-        """Creates a new instance of BaseModel, saves it
-        Exceptions:
-            SyntaxError: when there is no args given
-            NameError: when there is no object taht has the name
-        """
-        if args is None or len(args) == 0:
-            print("* class name missing *")
-        else:
-            new_list = shlex.split(args)
-            if new_list[0] in classes and len(new_list) == 1:
-                obj = eval(str(args) + "()")
-                obj.save()
-                print(obj.id)
-            elif new_list[0] in classes and len(new_list) > 1:
-                obj = eval(str(new_list[0]) + "()")
-                params = dict(arg.split('=') for arg in new_list[1:])
-                for key, value in params.items():
-                    if '_' in value:
-                        value = value.replace('_', ' ')
-                    if hasattr(obj, key):
-                        setattr(obj, key, value)
-                obj.save()
-                print(obj.id)
-            else:
-                print("* class doesn't exist *")
+    def do_create(self, line):
+        """ Create an object of any class"""
+        tokens = shlex.split(line)
+
+        if not line or len(line) == 0:
+            print("** class name missing **")
+            return
+        if tokens[0] not in HBNBCommand.classes:
+            print("** class doesn't exist **")
+            return
+
+        if len(tokens) == 1:
+            new_instance = HBNBCommand.classes[line]()
+            new_instance.save()
+            print(new_instance.id)
+        if len(tokens) > 1:
+            new_instance = HBNBCommand.classes[tokens[0]]()
+            pieces = dict(i.split('=') for i in tokens[1:])
+            for k, v in pieces.items():
+                if '_' in v:
+                    v = v.replace('_', ' ')
+                if hasattr(new_instance, k):
+                    setattr(new_instance, k, v)
+            new_instance.save()
+            print(new_instance.id)
 
     def do_show(self, args):
         """Prints the string representation of an instance
