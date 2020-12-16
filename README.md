@@ -1,4 +1,4 @@
-<center> <h1>HBNB - The Console</h1> </center>
+<center> <h1>HBNB - MySQL</h1> </center>
 
 This repository contains the initial stage of a student project to build a clone of the AirBnB website. This stage implements a backend interface, or console, to manage program data. Console commands allow the user to create, update, and destroy objects, as well as manage file storage. Using a system of JSON serialization/deserialization, storage is persistent between sessions.
 
@@ -140,3 +140,13 @@ Usage: <class_name>.update(<_id>, <dictionary>)
 (hbnb) ["[User] (98bea5de-9cb0-4d78-8a9d-c4de03521c30) {'updated_at': datetime.datetime(2020, 2, 19, 21, 47, 29, 134362), 'name': 'Fred the Frog', 'age': 9, 'id': '98bea5de-9cb0-4d78-8a9d-c4de03521c30', 'created_at': datetime.datetime(2020, 2, 19, 21, 47, 29, 134343)}"]
 ```
 <br>
+	
+## Environment
+* Language: Python3
+* OS: Ubuntu 14.04 LTS
+* Style guide for Python code: [PEP8](https://www.python.org/dev/peps/pep-0008/)
+
+## Authors
+* [Alison Quintero](https://twitter.com/AlisonQuinter17)
+* [Camilo Torres](https://twitter.com/CamiloTorresR_)
+* [Daniela Morales](https://twitter.com/Daniela10716033)
