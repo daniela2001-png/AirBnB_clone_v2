@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm import scoped_session
-from sqlalchemy import create_engine
+from sqlalchemy import (create_engine)
 import os
 from models.amenity import Amenity
 from models.state import State
@@ -70,7 +70,7 @@ class DBStorage():
         delete from the current database session
         obj if not None
         """
-        if not None:
+        if obj is not None:
             self.__session.delete(obj)
 
     def reload(self):
