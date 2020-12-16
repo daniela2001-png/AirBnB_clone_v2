@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 """Defines the Place class."""
 import models
 from os import getenv
