@@ -144,37 +144,6 @@ class HBNBCommand(cmd.Cmd):
             else:
                 print("* class doesn't exist *")
 
-    def do_show(self, args):
-        """Prints the string representation of an instance
-        Exceptions:
-            SyntaxError: when there is no args given
-            NameError: when there is no object taht has the name
-            IndexError: when there is no id given
-            KeyError: when there is no valid id given
-        """
-        try:
-            if not args:
-                raise SyntaxError()
-            my_list = args.split(" ")
-            if my_list[0] not in self.all_classes:
-                raise NameError()
-            if len(my_list) < 2:
-                raise IndexError()
-            objects = storage.all()
-            key = my_list[0] + '.' + my_list[1]
-            if key in objects:
-                print(objects[key])
-            else:
-                raise KeyError()
-        except SyntaxError:
-            print("* class name missing *")
-        except NameError:
-            print("* class doesn't exist *")
-        except IndexError:
-            print("* instance id missing *")
-        except KeyError:
-            print("* no instance found *")
-
     def help_create(self):
         """ Help information for the create method """
         print("Creates a class of any type")
