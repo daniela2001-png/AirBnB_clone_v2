@@ -34,14 +34,16 @@ class Place(BaseModel, Base):
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
     amenity_ids = []
-    reviews = relationship("Review", backref="place", cascade="delete")
 
     if getenv("HBNB_TYPE_STORAGE", None) != "db":
         @property
-        def reviews(self):
+        def amenities(self):
             """list of Review."""
             lista = []
             for review in list(models.storage.all(Review).values()):
                 if review.place_id == self.id:
-                    lista.append(review)
+                    lista.append(review)    
             return lista
+    else:
+        reviews = relationship("Review", cascade="delete", backref="place")
+        amenities = relationship("Amenity", secondary=association_table, viewonly=False)
