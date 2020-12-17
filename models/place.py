@@ -4,13 +4,17 @@ import models
 from os import getenv
 from models.base_model import Base, BaseModel
 from models.review import Review
+from models.amenity import Amenity
 from sqlalchemy import Table, Column, Float, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 
 association_table = Table('place_amenity', Base.metadata,
-    Column('place_id', String(60), ForeignKey('places.id'), nullable=False),
-    Column('amenity_id', String(60), ForeignKey('amenities.id'), nullable=False)
-)
+                          Column('place_id', String(60), ForeignKey(
+                              'places.id'), primary_key=True, nullable=False),
+                          Column('amenity_id', String(60), ForeignKey(
+                              'amenities.id'), primary_key=True, nullable=False)
+                          )
+
 
 class Place(BaseModel, Base):
     """
@@ -30,16 +34,30 @@ class Place(BaseModel, Base):
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
     amenity_ids = []
+    reviews = relationship("Review", backref="place", cascade="delete")
+    amenities = relationship("Amenity", secondary="place_amenity",
+                             viewonly=False)
 
     if getenv("HBNB_TYPE_STORAGE", None) != "db":
         @property
-        def amenities(self):
+        def reviews(self):
             """list of Review."""
             lista = []
             for review in list(models.storage.all(Review).values()):
                 if review.place_id == self.id:
-                    lista.append(review)    
+                    lista.append(review)
             return lista
-    else:
-        reviews = relationship("Review", cascade="delete", backref="place")
-        amenities = relationship("Amenity", secondary=association_table, viewonly=False)
+
+        @property
+        def amenities(self):
+            """list of Review."""
+            lista = []
+            for review in list(models.storage.all(Amenity).values()):
+                if review.place_id == self.id:
+                    lista.append(review)
+            return lista
+
+        @amenities.setter
+        def amenities(self, value):
+            if value == Amenity:
+                self.amenity_ids.append(value.id)
