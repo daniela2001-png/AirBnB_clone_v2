@@ -10,7 +10,7 @@ sudo mkdir -p /data/web_static/shared/
 sudo mkdir -p /data/web_static/releases/test/
 
 #contenido falso
-sudo echo "HOLA SOY DANI LOKS" >> /data/web_static/releases/test/index.html
+echo "HOLA SOY DANI LOKS" >> /data/web_static/releases/test/index.html
 
 # creamos un link simbolico entre current y releases
 # usamos el flag f -- force remove file if this exists still y el -s que crea uno simbolico y no hard!
