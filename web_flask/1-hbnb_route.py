@@ -10,11 +10,17 @@ app = Flask(__name__)
 
 @app.route("/", methods=["GET"], strict_slashes=False)
 def index():
+    """
+    main page
+    """
     return "Hello HBNB!"
 
 
 @app.route("/hbnb", methods=["GET"], strict_slashes=False)
 def hbnb():
+    """
+    return str
+    """
     return "HBNB"
 
 
