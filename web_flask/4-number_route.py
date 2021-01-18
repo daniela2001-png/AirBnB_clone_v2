@@ -23,7 +23,8 @@ def cisfun(text):
     print("C {}".format(text.replace("_", " ")))
 
 
-@app.route("/python", defaults={"text": "is cool"}, methods=["GET"], strict_slashes=False)
+@app.route("/python", defaults={"text": "is cool"}, methods=["GET"],
+           strict_slashes=False)
 @app.route("/python/<string:text>", methods=["GET"], strict_slashes=False)
 def python(text):
     return ("Python is {}".format(text.replace("_", " ")))
