@@ -10,16 +10,26 @@ app = Flask(__name__)
 
 @app.route("/", methods=["GET"], strict_slashes=False)
 def index():
+    """
+    return string
+    """
     return "Hello HBNB!"
 
 
 @app.route("/hbnb", methods=["GET"], strict_slashes=False)
 def hbnb():
+    """
+    string
+    """
     return "HBNB"
 
 
 @app.route("/c/<string:text>", methods=["GET"], strict_slashes=False)
 def cisfun(text):
+    """
+    str: true
+    prop : true
+    """
     print("C {}".format(text.replace("_", " ")))
 
 
