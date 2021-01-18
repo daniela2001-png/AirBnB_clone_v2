@@ -90,3 +90,9 @@ class FileStorage:
         """Delete a object inside the dict objects."""
         if obj is not None:
             del self.__objects['{}.{}'.format(obj.__class__.__name__, obj.id)]
+
+    def close(self):
+        """
+        call method reload()
+        """
+        self.reload()
