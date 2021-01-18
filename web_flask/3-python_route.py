@@ -27,7 +27,7 @@ def cisfun(text):
            strict_slashes=False)
 @app.route("/python/<string:text>", methods=["GET"], strict_slashes=False)
 def python(text):
-    return ("Python is {}".format(text.replace("_", " ")))
+    return ("Python {}".format(text.replace("_", " ")))
 
 
 if __name__ == "__main__":
