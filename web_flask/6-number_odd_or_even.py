@@ -23,7 +23,8 @@ def cisfun(text):
     print("C {}".format(text.replace("_", " ")))
 
 
-@app.route("/python", defaults={"text": "is cool"}, methods=["GET"], strict_slashes=False)
+@app.route("/python", defaults={"text": "is cool"}, methods=["GET"],
+           strict_slashes=False)
 @app.route("/python/<string:text>", methods=["GET"], strict_slashes=False)
 def python(text):
     return ("Python is {}".format(text.replace("_", " ")))
@@ -39,7 +40,8 @@ def number_template(n):
     return render_template("5-number.html", n=n)
 
 
-@app.route("/number_odd_or_even/<int:n>", methods=["GET"], strict_slashes=False)
+@app.route("/number_odd_or_even/<int:n>", methods=["GET"],
+           strict_slashes=False)
 def even_odd(n):
     return render_template("6-number_odd_or_even.html", n=n)
 
