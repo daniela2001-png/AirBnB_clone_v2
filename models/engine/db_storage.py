@@ -1,37 +1,39 @@
 #!/usr/bin/python3
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.orm import scoped_session
-from sqlalchemy import (create_engine)
-import os
-from models.amenity import Amenity
-from models.state import State
-from models.city import City
-from models.review import Review
-from models.user import User
-from models.place import Place
+"""Defines the DBStorage engine."""
+from os import getenv
 from models.base_model import Base
+from models.base_model import BaseModel
+from models.amenity import Amenity
+from models.city import City
+from models.place import Place
+from models.review import Review
+from models.state import State
+from models.user import User
+from sqlalchemy import create_engine
+from sqlalchemy.orm import relationship
+from sqlalchemy.orm import scoped_session
+from sqlalchemy.orm import sessionmaker
 
 
-class DBStorage():
+class DBStorage:
+    """Represents a database storage engine.
+    Attributes:
+        __engine (sqlalchemy.Engine): The working SQLAlchemy engine.
+        __session (sqlalchemy.Session): The working SQLAlchemy session.
     """
-    New engine DBStorage
-    """
+
     __engine = None
     __session = None
 
     def __init__(self):
-        """
-        constructor
-        """
-        user = os.getenv("HBNB_MYSQL_USER")
-        pwd = os.getenv("HBNB_MYSQL_PWD")
-        # will be localhost
-        host = os.getenv("HBNB_MYSQL_HOST")
-        db = os.getenv("HBNB_MYSQL_DB")
-        connection = 'mysql+mysqldb://{}:{}@localhost/{}'
-        self.__engine = create_engine(connection.format(
-            user, pwd, db), pool_pre_ping=True)
-        if (os.getenv("HBNB_ENV") == "test"):
+        """Initialize a new DBStorage instance."""
+        self.__engine = create_engine("mysql+mysqldb://{}:{}@{}/{}".
+                                      format(getenv("HBNB_MYSQL_USER"),
+                                             getenv("HBNB_MYSQL_PWD"),
+                                             getenv("HBNB_MYSQL_HOST"),
+                                             getenv("HBNB_MYSQL_DB")),
+                                      pool_pre_ping=True)
+        if getenv("HBNB_ENV") == "test":
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
@@ -54,39 +56,26 @@ class DBStorage():
         return {"{}.{}".format(type(o).__name__, o.id): o for o in objs}
 
     def new(self, obj):
-        """
-        add a new object to db
-        """
+        """Add obj to the current database session."""
         self.__session.add(obj)
 
     def save(self):
-        """
-        commit  the objetc to db
-        """
+        """Commit all changes to the current database session."""
         self.__session.commit()
 
     def delete(self, obj=None):
-        """
-        delete from the current database session
-        obj if not None
-        """
+        """Delete obj from the current database session."""
         if obj is not None:
             self.__session.delete(obj)
 
     def reload(self):
-        """
-        create all tables in the database
-        """
-        # create tables into a db
+        """Create all tables in the database and initialize a new session."""
         Base.metadata.create_all(self.__engine)
-        # creamos el session object
-        # expire_on_commmot = false >>> ignore the query sql
-        session = sessionmaker(bind=self.__engine, expire_on_commit=False)
-        Session = scoped_session(session)
+        session_factory = sessionmaker(bind=self.__engine,
+                                       expire_on_commit=False)
+        Session = scoped_session(session_factory)
         self.__session = Session()
 
     def close(self):
-        """
-        close session
-        """
+        """Close the working SQLAlchemy session."""
         self.__session.close()
