@@ -19,7 +19,7 @@ def states_list():
 @app.teardown_appcontext
 def teardown(exc):
     """Remove the current SQLAlchemy session."""
-    storage.closeHBNB_MYSQL_USER=hbnb_dev HBNB_MYSQL_PWD=hbnb_dev_pwd HBNB_MYSQL_HOST=localhost HBNB_MYSQL_DB=hbnb_dev_db HBNB_TYPE_STORAGE=db python3 -m web_flask.7-states_list()
+    storage.close()
 
 
 if __name__ == "__main__":
